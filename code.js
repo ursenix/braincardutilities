@@ -63,11 +63,25 @@ function GetMatrixArray(matrixSize){
 
 function DisplayTheImages(matrixArray){
 
+  if(matrixArray === undefined)
+    return false;
+
+  if(matrixArray.length != 4)
+    return false;
+
   for(var i = 0; i < matrixArray.length; i++){
     for(var j = 0; j < matrixArray.length; j++){
+
       var imageName = i.toString() + j.toString();
+
       var img = document.getElementById(imageName);
-      img.src = matrixArray[i][j];
+
+      if(img !== undefined){
+        img.src = matrixArray[i][j];
+        img.width = 150;
+        img.height = 150;
+      }
+
     }
   }
 
