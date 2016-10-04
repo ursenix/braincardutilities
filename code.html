@@ -3,24 +3,84 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <script type="text/javascript" src="code.js"></script>
   </head>
   <body>
+
+    <table id="imagesTable" name="imagesTable">
+      <tr>
+        <td>
+          <img id="00" name="00" src="" alt="" />
+        </td>
+        <td>
+          <img id="01" name="01" src="" alt="" />
+        </td>
+        <td>
+          <img id="02" src="" alt="" />
+        </td>
+        <td>
+          <img id="03" src="" alt="" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img id="10" src="" alt="" />
+        </td>
+        <td>
+          <img id="11" src="" alt="" />
+        </td>
+        <td>
+          <img id="12" src="" alt="" />
+        </td>
+        <td>
+          <img id="13" src="" alt="" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img id="20" src="" alt="" />
+        </td>
+        <td>
+          <img id="21" src="" alt="" />
+        </td>
+        <td>
+          <img id="22" src="" alt="" />
+        </td>
+        <td>
+          <img id="23" src="" alt="" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img id="30" src="" alt="" />
+        </td>
+        <td>
+          <img id="31" src="" alt="" />
+        </td>
+        <td>
+          <img id="32" src="" alt="" />
+        </td>
+        <td>
+          <img id="33" src="" alt="" />
+        </td>
+      </tr>
+    </table>
+
     <script type="text/javascript">
 
+      //var matrix3x3 = GetMatrixArray(3);
+      //console.log(matrix3x3);
 
-      var twoDimensionArray = [[],[]];
+      var matrix4x4 = GetMatrixArray(4);
+      console.log(matrix4x4);
 
-      twoDimensionArray[0][0] = 15;
-      twoDimensionArray[0][1] = 25;
-      twoDimensionArray[1][0] = 35;
-      twoDimensionArray[1][1] = 45;
+      DisplayTheImages(matrix4x4);
 
-      console.log(twoDimensionArray[0][0]);
-      console.log(twoDimensionArray[0][1]);
-      console.log(twoDimensionArray[1][0]);
-      console.log(twoDimensionArray[1][1]);
-      console.log(twoDimensionArray);
+
 
     </script>
+
+
+
   </body>
 </html>
