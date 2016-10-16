@@ -1,0 +1,7 @@
+.noDisplay{
+  visibility: hidden;
+}
+
+.Display{
+  visibility: visible;;
+}

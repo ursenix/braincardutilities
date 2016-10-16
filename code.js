@@ -7,7 +7,7 @@ function GetRandomNumberArray() {
 
   for(var i = 0; canContinue ; i++){
 
-    var randomNo = GetRandomNumber(1, 17);
+    var randomNo = GetRandomNumber(0, 16);
     var foundValue = (generatedNumbers.indexOf(randomNo) != -1);
 
     if(!foundValue)
@@ -50,7 +50,15 @@ function GetMatrixArray(matrixSize){
 
       for(var j = 0; j < matrixSize; j++){
 
-        twoDimensionArray[i][j] = 'images/' + generatedRandomNumbers[incrementer] + '.jpg'; // GetRandomImage();
+
+
+        if(generatedRandomNumbers[incrementer] <= 9){
+            twoDimensionArray[i][j] = 'images/0' + generatedRandomNumbers[incrementer] + '.jpg'; // GetRandomImage();
+        }
+        else {
+          twoDimensionArray[i][j] = 'images/' + generatedRandomNumbers[incrementer] + '.jpg'; // GetRandomImage();
+        }
+
 
         if(incrementer <= 16)
           incrementer++;
@@ -80,9 +88,33 @@ function DisplayTheImages(matrixArray){
         img.src = matrixArray[i][j];
         img.width = 150;
         img.height = 150;
+        img.style = 'visibility: hidden;';
       }
 
     }
   }
 
+}
+
+
+function toggleFlip(tile){
+  console.log(tile);
+  console.log(tile.id);
+
+  var backImgageId = tile.id.substring(0,2);
+  console.log(tile.id.substring(0,2));
+  tile.src = 'images/' + backImgageId + '.jpg';
+
+  setTimeout(function(){
+    tile.src = 'images/x.jpg';
+  }, 700);
+
+  //console.log(tile.style);
+  //var style = tile.getAttribute(style);
+  //tile.style.classList.toggle("flip");
+  //tile.classList.toggle("flip");
+  //style = "flip";
+  //console.log(style);
+  //document.querySelector(tileId).classList.toggle("flip");
+  //var images = document.querySelectorAll("img");
 }
