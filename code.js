@@ -1,5 +1,7 @@
 'use strict';
 
+let lastClickedTileId = '';
+
 function GetRandomNumberArray() {
 
   var generatedNumbers = [];
@@ -69,45 +71,36 @@ function GetMatrixArray(matrixSize){
 }
 
 
-function DisplayTheImages(matrixArray){
+function toggleFlip(tile){
 
-  if(matrixArray === undefined)
-    return false;
+  console.log(tile);
 
-  if(matrixArray.length != 4)
-    return false;
-
-  for(var i = 0; i < matrixArray.length; i++){
-    for(var j = 0; j < matrixArray.length; j++){
-
-      var imageName = i.toString() + j.toString();
-
-      var img = document.getElementById(imageName);
-
-      if(img !== undefined){
-        img.src = matrixArray[i][j];
-        img.width = 150;
-        img.height = 150;
-        img.style = 'visibility: hidden;';
-      }
-
-    }
+  if(lastClickedTileId != ''){
+    hideMe(lastClickedTileId);
   }
 
-}
-
-
-function toggleFlip(tile){
-  console.log(tile);
-  console.log(tile.id);
-
   var backImgageId = tile.id.substring(0,2);
-  console.log(tile.id.substring(0,2));
-  tile.src = 'images/' + backImgageId + '.jpg';
+  console.log(backImgageId);
 
-  setTimeout(function(){
-    tile.src = 'images/x.jpg';
-  }, 700);
+  let backImage = document.getElementById(backImgageId);
+  console.log(backImage);
+
+  //let imgSrc = tile.getAttributeNode("data-img-src");
+  //console.log(imgSrc);
+
+  if(backImage){
+    console.log(backImage.src);
+
+    tile.src = backImage.src;
+
+    setTimeout(function(){
+      tile.src = 'images/x.jpg';
+    }, 1000);
+
+  }
+
+  lastClickedTileId = tile.id;
+
 
   //console.log(tile.style);
   //var style = tile.getAttribute(style);
@@ -117,4 +110,136 @@ function toggleFlip(tile){
   //console.log(style);
   //document.querySelector(tileId).classList.toggle("flip");
   //var images = document.querySelectorAll("img");
+}
+
+
+
+function DisplayTheImages(matrixArray){
+
+  if(matrixArray === undefined)
+    return false;
+
+  if(matrixArray.length != 4)
+    return false;
+
+
+
+  for(var i = 0; i < matrixArray.length; i++){
+    for(var j = 0; j < matrixArray.length; j++){
+
+      var imageName = i.toString() + j.toString();
+      var img = document.getElementById(imageName);
+
+      console.log(img);
+
+      if(img){
+        img.src = matrixArray[i][j];
+        img.width = 150;
+        img.height = 150;
+        img.style = 'display: none;';
+        //img.addEventListener("click", toggleFlip(img));
+        img.onclick = function(img){toggleFlip(this)};
+        //console.log(window.addEventListener);
+        // if(window.addEventListener){
+        //
+        // }
+        // else {
+        //   img.attachEvent("onclick", toggleFlip(img));
+        // }
+        //img[window.addEventListener ? 'addEventListener' : 'attachEvent']( window.addEventListener ? 'click' : 'onclick', toggleFlip(img), false);
+        //console.log(img);
+
+
+      }
+
+      var xImageId = i.toString() + j.toString() + 'x';
+      var xImg = document.getElementById(xImageId);
+
+      console.log(xImg);
+
+      if(xImg){
+        xImg.src = 'images/x.jpg';
+        xImg.width = 150;
+        xImg.height = 150;
+        //xImg.addEventListener("click", toggleFlip(xImg));
+        xImg.onclick = function(xImg){toggleFlip(this);}
+        //xImg.addEventListener("onclick", toggleFlip(xImg));
+        // if(window.addEventListener){
+        //
+        //   console.log(xImg);
+        // }
+        // else {
+        //   xImg.attachEvent("onclick", toggleFlip(xImg));
+        // }
+        //xImg[window.addEventListener ? 'addEventListener' : 'attachEvent']( window.addEventListener ? 'click' : 'onclick', toggleFlip(xImg), false);
+
+        /*
+        let imgSrcAttribute = document.createAttribute("data-img-pair");
+        imgSrcAttribute.value = matrixArray[i][j];
+        img.setAttributeNode(imgSrcAttribute);
+        console.log(img);
+        */
+
+      }
+
+
+    }
+  }
+
+}
+
+function hideMe(id){
+  if(id){
+    var tile = document.getElementById(id);
+
+    if(tile){
+      tile.src = 'images/x.jpg';
+    }
+  }
+}
+
+function isTileMatching(id){
+  if(id){
+    if(id == getParing(lastClickedTileId)){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+}
+
+
+function getParing(id){
+  let pairedId = '';
+  switch(id){
+    case '00':
+      pairedId = '08';
+      break;
+    case '01':
+      pairedId = '09';
+      break;
+    case '02':
+      pairedId = '10';
+      break;
+    case '03':
+      pairedId = '11';
+      break;
+    case '04':
+      pairedId = '12';
+      break;
+    case '05':
+      pairedId = '13';
+      break;
+    case '06':
+      pairedId = '14';
+      break;
+    case '07':
+        pairedId = '15';
+        break;
+    default:
+        pairedId = '';
+  }
+
+  return pairedId;
 }

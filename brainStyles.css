@@ -5,3 +5,24 @@
 .Display{
   visibility: visible;;
 }
+
+table{
+
+  }
+
+table tr td{
+  }
+
+/*table{
+  padding: 0px;
+  background-color: orange;
+  width: 50%;
+  height: auto;
+  line-height: 1px;
+
+}
+
+table tr{
+  line-height: : 5px;
+  height: 15px;
+}*/
