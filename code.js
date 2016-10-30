@@ -1,6 +1,9 @@
 'use strict';
 
-let lastClickedTileId = '';
+let lastClickedImgData = '';
+let lastClickedImgId = '';
+let lastBeforeClickedImgData = '';
+let imagesOpenedCount = 0;
 
 function GetRandomNumberArray() {
 
@@ -73,11 +76,20 @@ function GetMatrixArray(matrixSize){
 
 function toggleFlip(tile){
 
-  console.log(tile);
+  console.log("--------------------");
 
-  if(lastClickedTileId != ''){
-    hideMe(lastClickedTileId);
+  console.log("Last clicked img data: " + lastClickedImgData);
+  console.log("last clicked img id:" + lastClickedImgId);
+
+  if(lastClickedImgId){
+    var lastClickedTile = document.getElementById(lastClickedImgId);
+
   }
+
+  let isTileMatched = false;
+
+  //console.log("Is Tile Matched");
+  //console.log(isTileMatched);
 
   var backImgageId = tile.id.substring(0,2);
   console.log(backImgageId);
@@ -85,22 +97,79 @@ function toggleFlip(tile){
   let backImage = document.getElementById(backImgageId);
   console.log(backImage);
 
-  //let imgSrc = tile.getAttributeNode("data-img-src");
-  //console.log(imgSrc);
+  let imgData = backImage.getAttributeNode("data-img-pair");
+  console.log("imgData: " + imgData.value);
+
+  imgData = imgData.value.replace('.jpg', '').replace('images/', '');
+
+
+
+  imagesOpenedCount++;
+
+  if(isTileMatching(imgData)){
+    console.log("Tiles Matching");
+    isTileMatched = true;
+  }
+  else {
+    console.log("Tiles NOT Matching");
+    // if(imagesOpenedCount == 0){
+    //   tile.src = 'images/x.jpg';
+    //   if(lastClickedTile){
+    //     lastClickedTile.src = 'images/x.jpg';
+    //   }
+    //   //hideMe(lastClickedImgData);
+    // }
+    isTileMatched = false;
+  }
 
   if(backImage){
     console.log(backImage.src);
 
-    tile.src = backImage.src;
+  tile.src = backImage.src;
 
+
+
+  // setTimeout(function(){
+  //   tile.src = 'images/x.jpg';
+  // }, 1000);
+
+  console.log("imagesOpenedCount: " + imagesOpenedCount);
+
+  if(imagesOpenedCount == 2){
+    console.log("Images opened count is 2");
     setTimeout(function(){
+    if(!isTileMatched){
       tile.src = 'images/x.jpg';
-    }, 1000);
+      console.log("Last clicked image id (inside): " + lastClickedImgId);
+      if(lastClickedTile){
+        lastClickedTile.src = 'images/x.jpg';
+      }
+      lastClickedImgId = '';
+    }
+  }, 350);
+
+    if(isTileMatched){
+      tile.onclick = function(){return false;};
+      lastClickedTile.onclick = function(){return false;};
+    }
+
+    imagesOpenedCount=0;
+    //lastClickedImgId = '';
+  }
+
+  if(imagesOpenedCount == 1){
+    lastClickedImgId = tile.id;
+  }
+
+
 
   }
 
-  lastClickedTileId = tile.id;
+  lastClickedImgData = imgData;
 
+
+  console.log("Last clicked img data: " + lastClickedImgData);
+  console.log("last clicked img id:" + lastClickedImgId);
 
   //console.log(tile.style);
   //var style = tile.getAttribute(style);
@@ -130,15 +199,24 @@ function DisplayTheImages(matrixArray){
       var imageName = i.toString() + j.toString();
       var img = document.getElementById(imageName);
 
-      console.log(img);
+      //console.log(img);
 
       if(img){
         img.src = matrixArray[i][j];
         img.width = 150;
         img.height = 150;
         img.style = 'display: none;';
+
+
+
+        let imgSrcAttribute = document.createAttribute("data-img-pair");
+        imgSrcAttribute.value = matrixArray[i][j];
+        img.setAttributeNode(imgSrcAttribute);
+        //console.log(img);
+
+
         //img.addEventListener("click", toggleFlip(img));
-        img.onclick = function(img){toggleFlip(this)};
+
         //console.log(window.addEventListener);
         // if(window.addEventListener){
         //
@@ -155,7 +233,7 @@ function DisplayTheImages(matrixArray){
       var xImageId = i.toString() + j.toString() + 'x';
       var xImg = document.getElementById(xImageId);
 
-      console.log(xImg);
+      //console.log(xImg);
 
       if(xImg){
         xImg.src = 'images/x.jpg';
@@ -173,12 +251,7 @@ function DisplayTheImages(matrixArray){
         // }
         //xImg[window.addEventListener ? 'addEventListener' : 'attachEvent']( window.addEventListener ? 'click' : 'onclick', toggleFlip(xImg), false);
 
-        /*
-        let imgSrcAttribute = document.createAttribute("data-img-pair");
-        imgSrcAttribute.value = matrixArray[i][j];
-        img.setAttributeNode(imgSrcAttribute);
-        console.log(img);
-        */
+
 
       }
 
@@ -198,21 +271,31 @@ function hideMe(id){
   }
 }
 
-function isTileMatching(id){
-  if(id){
-    if(id == getParing(lastClickedTileId)){
-      return true;
+function isTileMatching(imgData){
+console.log("is tile match");
+console.log(imgData);
+  if(imgData){
+    console.log(lastClickedImgData);
+    if(lastClickedImgData){
+      let pairedId = getParing(lastClickedImgData);
+      console.log("Paired ID: " + pairedId);
+      if(imgData == pairedId){
+        return true;
+      }
+      else {
+        return false;
+      }
     }
-    else {
-      return false;
-    }
+
   }
 }
 
 
-function getParing(id){
+function getParing(imgData){
+
   let pairedId = '';
-  switch(id){
+
+  switch(imgData){
     case '00':
       pairedId = '08';
       break;
@@ -235,8 +318,33 @@ function getParing(id){
       pairedId = '14';
       break;
     case '07':
-        pairedId = '15';
-        break;
+      pairedId = '15';
+      break;
+
+    case '08':
+      pairedId = '00';
+      break;
+    case '09':
+      pairedId = '01';
+      break;
+    case '10':
+      pairedId = '02';
+      break;
+    case '11':
+      pairedId = '03';
+      break;
+    case '12':
+      pairedId = '04';
+      break;
+    case '13':
+      pairedId = '05';
+      break;
+    case '14':
+      pairedId = '06';
+      break;
+    case '15':
+      pairedId = '07';
+      break;
     default:
         pairedId = '';
   }
