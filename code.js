@@ -4,6 +4,14 @@ let lastClickedImgData = '';
 let lastClickedImgId = '';
 let lastBeforeClickedImgData = '';
 let imagesOpenedCount = 0;
+let tilesCompleted = 0;
+let firstClicked = false;
+let gameStartedTime = new Date();
+let gameCompletedTime = new Date();
+
+var gameCompletedEvent = document.createEvent('Event');
+gameCompletedEvent.initEvent('gameCompleted', true, true);
+
 
 function GetRandomNumberArray() {
 
@@ -72,115 +80,6 @@ function GetMatrixArray(matrixSize){
 
     return twoDimensionArray;
 }
-
-
-function toggleFlip(tile){
-
-  console.log("--------------------");
-
-  console.log("Last clicked img data: " + lastClickedImgData);
-  console.log("last clicked img id:" + lastClickedImgId);
-
-  if(lastClickedImgId){
-    var lastClickedTile = document.getElementById(lastClickedImgId);
-
-  }
-
-  let isTileMatched = false;
-
-  //console.log("Is Tile Matched");
-  //console.log(isTileMatched);
-
-  var backImgageId = tile.id.substring(0,2);
-  console.log(backImgageId);
-
-  let backImage = document.getElementById(backImgageId);
-  console.log(backImage);
-
-  let imgData = backImage.getAttributeNode("data-img-pair");
-  console.log("imgData: " + imgData.value);
-
-  imgData = imgData.value.replace('.jpg', '').replace('images/', '');
-
-
-
-  imagesOpenedCount++;
-
-  if(isTileMatching(imgData)){
-    console.log("Tiles Matching");
-    isTileMatched = true;
-  }
-  else {
-    console.log("Tiles NOT Matching");
-    // if(imagesOpenedCount == 0){
-    //   tile.src = 'images/x.jpg';
-    //   if(lastClickedTile){
-    //     lastClickedTile.src = 'images/x.jpg';
-    //   }
-    //   //hideMe(lastClickedImgData);
-    // }
-    isTileMatched = false;
-  }
-
-  if(backImage){
-    console.log(backImage.src);
-
-  tile.src = backImage.src;
-
-
-
-  // setTimeout(function(){
-  //   tile.src = 'images/x.jpg';
-  // }, 1000);
-
-  console.log("imagesOpenedCount: " + imagesOpenedCount);
-
-  if(imagesOpenedCount == 2){
-    console.log("Images opened count is 2");
-    setTimeout(function(){
-    if(!isTileMatched){
-      tile.src = 'images/x.jpg';
-      console.log("Last clicked image id (inside): " + lastClickedImgId);
-      if(lastClickedTile){
-        lastClickedTile.src = 'images/x.jpg';
-      }
-      lastClickedImgId = '';
-    }
-  }, 350);
-
-    if(isTileMatched){
-      tile.onclick = function(){return false;};
-      lastClickedTile.onclick = function(){return false;};
-    }
-
-    imagesOpenedCount=0;
-    //lastClickedImgId = '';
-  }
-
-  if(imagesOpenedCount == 1){
-    lastClickedImgId = tile.id;
-  }
-
-
-
-  }
-
-  lastClickedImgData = imgData;
-
-
-  console.log("Last clicked img data: " + lastClickedImgData);
-  console.log("last clicked img id:" + lastClickedImgId);
-
-  //console.log(tile.style);
-  //var style = tile.getAttribute(style);
-  //tile.style.classList.toggle("flip");
-  //tile.classList.toggle("flip");
-  //style = "flip";
-  //console.log(style);
-  //document.querySelector(tileId).classList.toggle("flip");
-  //var images = document.querySelectorAll("img");
-}
-
 
 
 function DisplayTheImages(matrixArray){
@@ -272,13 +171,13 @@ function hideMe(id){
 }
 
 function isTileMatching(imgData){
-console.log("is tile match");
-console.log(imgData);
+//console.log("is tile match");
+//console.log(imgData);
   if(imgData){
-    console.log(lastClickedImgData);
+    //console.log(lastClickedImgData);
     if(lastClickedImgData){
       let pairedId = getParing(lastClickedImgData);
-      console.log("Paired ID: " + pairedId);
+      //console.log("Paired ID: " + pairedId);
       if(imgData == pairedId){
         return true;
       }
